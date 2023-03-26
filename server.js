@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const ShortUrl = require("./models/shortUrl");
 const app = express();
+require("dotenv").config();
 
 const database = module.exports = () => {
   const connectionParams = {
@@ -9,7 +10,7 @@ const database = module.exports = () => {
     // useCreateIndex: true,
   }
   try {
-    mongoose.connect("mongodb+srv://Vanity:YoT5tNIo3PKGbkCY@shorturl.f7lgzws.mongodb.net/test", connectionParams)
+    mongoose.connect(process.env.DATABASE, connectionParams)
     console.log('Connected to database ')
   } catch (error) {
     console.log('Could not connect to database: ', error)
@@ -50,5 +51,10 @@ app.get("/:shortUrl", async (req, res) => {
 });
 
 app.listen(process.env.PORT || 5000, () => {
-  console.log("Server is running on http://localhost:5000/");
+  if (process.env.PORT){
+    console.log(`Server is running on http://localhost:${process.env.PORT}/`);
+  }
+  else{
+    console.log(`Server is running on http://localhost:5000/`);
+  }
 });
